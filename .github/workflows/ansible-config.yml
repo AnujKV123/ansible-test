@@ -19,5 +19,6 @@ jobs:
         # replace `main` with any valid ref, or tags like `v6`
         uses: ansible/ansible-lint-action@main
         # optional:
-        # with:
+        with:
+          targets:"../"
         #   path: "playbooks/"  # <-- only one value is allowed
