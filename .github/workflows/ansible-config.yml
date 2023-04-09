@@ -1,6 +1,5 @@
 
 name: MyWorkflow
-
 on:
   workflow_dispatch:
 
