@@ -19,6 +19,7 @@ jobs:
         # replace `main` with any valid ref, or tags like `v6`
         uses: ansible/ansible-lint-action@main
         # optional:
-        # with:
-          # targets:"../"
+        with:
+          inventory: "../../inventory.yml"
+          playbook: "../../playbook.yml"
         #   path: "playbooks/"  # <-- only one value is allowed

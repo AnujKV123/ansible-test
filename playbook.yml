@@ -3,13 +3,6 @@
   remote_user: root
   gather_facts: false
 
-
-  vars:
-
-    ntp_servers:
-      - ntp server 172.31.33.218
-
-
   tasks:
 
   - name: Check for Python
