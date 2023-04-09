@@ -19,6 +19,6 @@ jobs:
         uses: ansible/ansible-lint-action@main
         # optional:
         with:
-          inventory: "../../inventory.yml"
-          playbook: "../../playbook.yml"
+          inventory: "inventory.yml"
+          playbook: "playbook.yml"
         #   path: "playbooks/"  # <-- only one value is allowed
