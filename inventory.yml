@@ -1,5 +1,0 @@
----
-all:
-  hosts:
-    host1:
-      ansible_host: ${{ secrets.P_IP }}
