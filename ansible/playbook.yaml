@@ -1,24 +1,36 @@
-- hosts: all
-  become: true
+# - hosts: all
+#   become: true
   
+#   tasks:
+#     - name: Update apt cache
+#       apt:
+#         update_cache: yes
+#       when: ansible_pkg_mgr == 'apt'
+      
+#     - name: Install Python
+#       apt:
+#         name:
+#           - python3
+#           - python3-pip
+#         state: latest
+#       when: ansible_pkg_mgr == 'apt'
+      
+#     - name: Install Python
+#       yum:
+#         name:
+#           - python3
+#           - python3-pip
+#         state: latest
+#       # when: ansible_pkg_mgr == 'yum'
+- hosts: all
+  remote_user: root
+  gather_facts: false
   tasks:
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-      when: ansible_pkg_mgr == 'apt'
-      
-    - name: Install Python
-      apt:
-        name:
-          - python3
-          - python3-pip
-        state: latest
-      when: ansible_pkg_mgr == 'apt'
-      
-    - name: Install Python
-      yum:
-        name:
-          - python3
-          - python3-pip
-        state: latest
-      # when: ansible_pkg_mgr == 'yum'
+  - name: Check for Python
+      raw: test -e /usr/bin/python
+      changed_when: false
+      failed_when: false
+      register: check_python
+  - name: Install Python
+      raw: apt -y update && apt install -y python-minimal
+      when: check_python.rc != 0
