@@ -22,15 +22,12 @@
 #           - python3-pip
 #         state: latest
 #       # when: ansible_pkg_mgr == 'yum'
-- hosts: all
-  remote_user: root
-  gather_facts: false
+---
+- name: Install Python on Ubuntu
+  hosts: your_host
+  become: true
   tasks:
-  # - name: Check for Python
-  #     raw: test -e /usr/bin/python
-  #     changed_when: false
-  #     failed_when: false
-  #     register: check_python
-  - name: Install Python
-      raw: apt -y update && apt install -y python-minimal
-      when: check_python.rc != 0
+    - name: Install Python
+      apt:
+        name: python
+        state: present
