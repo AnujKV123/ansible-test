@@ -1,33 +1,8 @@
-# - hosts: all
-#   become: true
-  
-#   tasks:
-#     - name: Update apt cache
-#       apt:
-#         update_cache: yes
-#       when: ansible_pkg_mgr == 'apt'
-      
-#     - name: Install Python
-#       apt:
-#         name:
-#           - python3
-#           - python3-pip
-#         state: latest
-#       when: ansible_pkg_mgr == 'apt'
-      
-#     - name: Install Python
-#       yum:
-#         name:
-#           - python3
-#           - python3-pip
-#         state: latest
-#       # when: ansible_pkg_mgr == 'yum'
----
-- name: Install Python on Ubuntu
-  hosts: your_host
-  become: true
+- name: This is a hello-world example
+  hosts: all
   tasks:
-    - name: Install Python
-      apt:
-        name: python
-        state: present
+    - name: Create a file called '/tmp/testfile.txt' with the content 'hello world'.
+      copy:
+        content: hello-world
+        dest: /tmp/testfile.txt
+        mode: 0644
