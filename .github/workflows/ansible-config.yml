@@ -1,22 +1,68 @@
-
-name: MyWorkflow
+# This is a basic workflow to help you get started with Actions
+name: Ansible Check 
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+#  push:
+#    branches: [ main ]
+#  pull_request:
+#    branches: [ main ]
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
-    name: Installing Python.... # Naming the build is important to use it as a status check
-    runs-on: self-hosted
+  # This workflow contains a single job called "validate"
+  ansible_lint_validate:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - name: Run ansible-lint
+        # replace `main` with any valid ref, or tags like `v6`
+        uses: ansible-community/ansible-lint-action@v6.0.2
+        with:
+          args: "ansible" # my ansible files in a folder
+  install_ansible:
+  # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # The anisble_lint_validate Job need to be sucessfull
+    needs: [ ansible_lint_validate ]
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x
-      - name: Install dependencies
+          python-version: 3.9
+      - name: Install dependencies Including Ansible
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ansible
-      - name: Run Ansible playbook
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi
+      - name: Ansible playbook Host:Localhost
         run: |
-          ansible-playbook -i inventory.ini playbook.yml
+          ansible --version
+          #ansible all -i inventory.txt -m ping
+          ansible-playbook ansible/helloworld.yaml
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
+      - name: Ansible Playbook Host:EC2Instace
+        run: |
+          mkdir -p /home/runner/.ssh/
+          touch /home/runner/.ssh/id_rsa
+          echo -e "${{secrets.SSH_KEY}}" > /home/runner/.ssh/id_rsa.pem
+          chmod 600 /home/runner/.ssh/id_rsa.pem
+          echo "changed permission"
+          #ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{secrets.SSH_HOST}} >> /home/runner/.ssh/known_hosts
+          
+      - name: Run ansible script
+        shell: bash 
+        run: |
+          service ssh status
+          #cd infrastructure/ansible
+          #cat setup-prod.yml
+          ansible-playbook -u ubantu -vvv --private-key D:\auth-key\anuj-key-ohio.ppk -i ansible/inventory.txt ansible/playbook.yaml
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
