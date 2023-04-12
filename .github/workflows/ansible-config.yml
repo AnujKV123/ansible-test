@@ -63,6 +63,6 @@ jobs:
           service ssh status
           #cd infrastructure/ansible
           #cat setup-prod.yml
-          ansible-playbook -u ubantu -vvv --private-key D:\auth-key\anuj-key-ohio.ppk -i ansible/inventory.txt ansible/playbook.yaml
+          ansible-playbook -u ubantu -vvv --private-key D:\auth-key\anuj-key-ohio.ppk -i ansible/inventory.txt ansible/playbook.yml
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
