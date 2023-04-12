@@ -10,7 +10,6 @@
         content: hello-world
         dest: /tmp/testfile.txt
         line: "[[ -s ${pythonbrew.bashrc_path} ]] && source ${pythonbrew.bashrc_path}"
-        regexp: "^\[\[ -s \\$HOME/\.pythonbrew"
         owner: foo
         state: present
         insertafter: EOF
