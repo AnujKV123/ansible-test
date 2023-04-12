@@ -1,3 +1,4 @@
+---
 # This is a basic workflow to help you get started with Actions
 name: Ansible Check 
 # Controls when the workflow will run
@@ -63,6 +64,6 @@ jobs:
           service ssh status
           #cd infrastructure/ansible
           #cat setup-prod.yml
-          ansible-playbook -u ubantu -vvv --private-key D:\auth-key\anuj-key-ohio.ppk -i ansible/inventory.txt ansible/playbook.yml
+          ansible-playbook -u ubantu -vvv --private-key D:\auth-key\anuj-key-singapore.ppk -i ansible/inventory.txt ansible/playbook.yml
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
